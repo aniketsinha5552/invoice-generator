@@ -4,23 +4,23 @@ import './App.css';
 import Container from 'react-bootstrap/Container';
 import InvoiceForm from './components/InvoiceForm';
 import InvoiceList from './components/InvoiceList';
-import { Routes,Route } from 'react-router-dom';
+import { Routes,Route, useNavigate } from 'react-router-dom';
 
-class App extends Component {
-  render() {
+function App() {
+  const navigate = useNavigate();
   return (
-    <div className="App d-flex flex-column align-items-center justify-content-center w-100">
+    <div className="App d-flex flex-column w-100 p-2" style={{height:"100vh"}}>
       <Routes>
         <Route path='/' element={<InvoiceList/>} />
         <Route path='/create' 
         element={
           <Container>
-            <InvoiceForm/>
+            <InvoiceForm navigate={navigate}/>
           </Container>
         } />
       </Routes>      
     </div>
   );
-}}
+}
 
 export default App;

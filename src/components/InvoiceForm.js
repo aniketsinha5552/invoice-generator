@@ -122,7 +122,14 @@ class InvoiceForm extends React.Component {
   };
   closeModal = (event) => this.setState({isOpen: false});
   render() {
+    const  goBack=(event)=>{
+      event.preventDefault()
+      const {navigate}= this.props
+      navigate('/')
+    }
+
     return (<Form onSubmit={this.openModal}>
+      <button className="btn btn-light" onClick={goBack}>Go back</button>
       <Row>
         <Col md={8} lg={9}>
           <Card className="p-4 p-xl-5 my-3 my-xl-4">
