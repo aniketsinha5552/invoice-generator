@@ -40,7 +40,7 @@ class InvoiceForm extends React.Component {
     };
     this.state.items = [
       {
-        id: 0,
+        id: 1,
         name: '',
         description: '',
         price: '1.00',
@@ -55,8 +55,7 @@ class InvoiceForm extends React.Component {
       const invoices = [...this.props.invoices]
       let currInvoice = invoices.find((invoice)=> invoice.id==id)
       this.setState(currInvoice)
-      // this.state?.items =currInvoice?.items
-      // this.setState(this.setState.items)
+      // this.setState({items:currInvoice?.items })
     }
     this.handleCalculateTotal()
   }
@@ -103,19 +102,19 @@ class InvoiceForm extends React.Component {
 
   };
   onItemizedItemEdit(evt) {
-    var item = {
+    var currItem = {
       id: evt.target.id,
       name: evt.target.name,
       value: evt.target.value
     };
     var items = this.state.items.slice();
-    var newItems = items.map(function(items) {
-      for (var key in items) {
-        if (key == item.name && items.id == item.id) {
-          items[key] = item.value;
+    var newItems = items.map(function(item) {
+      for (var key in item) {
+        if (key == currItem.name && item.id == currItem.id) {
+          item[key] = currItem.value;
         }
       }
-      return items;
+      return item;
     });
     this.setState({items: newItems});
     this.handleCalculateTotal();
@@ -148,13 +147,13 @@ class InvoiceForm extends React.Component {
         if(id){
           this.props.editInvoice({
             id: id,
-            data: this.state
-          });
+            data: {...this.state,isOpen:false}
+          });      
         }
         else{
-          this.props.addInvoice(this.state);
-          navigate('/')
+          this.props.addInvoice({...this.state,isOpen:false});
         }
+        navigate('/')
     }
 
     return (<Form onSubmit={this.openModal}>
@@ -241,9 +240,9 @@ class InvoiceForm extends React.Component {
         </Col>
         <Col md={4} lg={3}>
           <div className="sticky-top pt-md-3 pt-xl-4">
-            <Button variant="success" type="button" className="d-block w-100 mb-2" onClick={saveInvoice}>Save Invoice</Button>
+            {/* <Button variant="success" type="button" className="d-block w-100 mb-2" onClick={saveInvoice}>Save Invoice</Button> */}
             <Button variant="primary" type="submit" className="d-block w-100">Review Invoice</Button>
-            <InvoiceModal showModal={this.state.isOpen} closeModal={this.closeModal} info={this.state} items={this.state.items} currency={this.state.currency} subTotal={this.state.subTotal} taxAmmount={this.state.taxAmmount} discountAmmount={this.state.discountAmmount} total={this.state.total}/>
+            <InvoiceModal showModal={this.state.isOpen} closeModal={this.closeModal} info={this.state} items={this.state.items} currency={this.state.currency} subTotal={this.state.subTotal} taxAmmount={this.state.taxAmmount} discountAmmount={this.state.discountAmmount} total={this.state.total} save={saveInvoice}/>
             <Form.Group className="mb-3">
               <Form.Label className="fw-bold">Currency:</Form.Label>
               <Form.Select onChange={event => this.onCurrencyChange({currency: event.target.value})} className="btn btn-light my-1" aria-label="Change Currency">

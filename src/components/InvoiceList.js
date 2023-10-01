@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { deleteInvoice } from "../redux/reducers/invoiceRedux";
+import { BiTrash,BiAddToQueue } from "react-icons/bi";
 
 const InvoiceList = () => {
   const invoiceList = useSelector(state=>state.invoices)
@@ -21,7 +22,9 @@ const InvoiceList = () => {
           style={{ height: "200px", width: "300px" }}
           onClick={() => navigate("/create")}
         >
-          <h3>New Invoice</h3>
+          <h3>
+          <BiAddToQueue style={{height: '100px', width: '100px', padding: '7.5px'}} className="text-white mt-1"/>
+          </h3>
         </button>
 
         {invoiceList.map((invoice)=>{
@@ -36,7 +39,10 @@ const InvoiceList = () => {
                 <h5>Bill To: {invoice.billTo}</h5>
                 <h5>Bill From: {invoice.billFrom}</h5>
                 <h5>Total: {invoice.total} {invoice.currency}</h5>
-                <button className="btn btn-danger" onClick={(e)=>deleteItem(e,invoice.id)}>Delete</button>           
+                <button className="btn btn-danger" onClick={(e)=>deleteItem(e,invoice.id)}>
+                <BiTrash style={{height: '20px', width: '20px', padding: '0px'}} className="text-white btn btn-danger"/>
+                </button>
+
             </button>
           )
         })}
