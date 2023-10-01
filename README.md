@@ -1,8 +1,8 @@
 # Invoice Generator
 ##  A simple invoice management system using React and Redux.
 
-## Built on top of Invoice Generator - React App (https://github.com/johnuberbacher/invoice-generator)
-![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![](https://img.shields.io/badge/bootstrap-%23563D7C.svg?style=for-the-badge&logo=bootstrap&logoColor=white)
+### Built on top of Invoice Generator - React App (https://github.com/johnuberbacher/invoice-generator)
+#### Original App: https://invoice-generator-react.netlify.app/
 
 ### Live Demo
 https://invoice-generator-redux.netlify.app/
