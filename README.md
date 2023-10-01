@@ -19,8 +19,12 @@ https://invoice-generator-redux.netlify.app/
 
 
 ### Installation
+
+Run the following commands in the terminal
 ```
 git clone https://github.com/aniketsinha5552/invoice-generator-redux.git
+
+cd invoice-generator-redux
 
 npm install
 
