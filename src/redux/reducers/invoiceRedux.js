@@ -4,6 +4,7 @@ const invoiceSlice= createSlice({
     name: "invoices",
     initialState:{
      invoices:[{
+          id: nanoid(),
           currency: '$',
           currentDate: '',
           invoiceNumber: 1,
@@ -33,13 +34,28 @@ const invoiceSlice= createSlice({
     },
     reducers:{
          addInvoice:(state,action)=>{
-              state.push(action.payload);
+              let payload={
+               id: nanoid(),
+               ...action.payload
+              }
+              state.invoices.push(payload)
+              alert("Invoice Saved!")
          },
          deleteInvoice:(state,action)=>{
-
+              console.log(action.payload)
+              state.invoices = state.invoices.filter((invoice)=>invoice.id!==action.payload)
          },
          editInvoice:(state,action)=>{
-
+             let id = action.payload.id
+             let payload={
+               id: id,
+               ...action.payload.data
+              }
+             // remove the particular invoice
+             state.invoices = state.invoices.filter((invoice)=>invoice.id!==id)
+            //  add the edited data
+            state.invoices.push(payload)
+            alert("Invoice Saved!")
          },
     }
 })

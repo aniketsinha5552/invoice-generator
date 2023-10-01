@@ -8,7 +8,13 @@ import Card from 'react-bootstrap/Card';
 import InvoiceItem from './InvoiceItem';
 import InvoiceModal from './InvoiceModal';
 import InputGroup from 'react-bootstrap/InputGroup';
+import {connect} from "react-redux"
+import { addInvoice,editInvoice } from '../redux/reducers/invoiceRedux';
+import { useParams } from 'react-router-dom';
 
+function withParams(Component) {
+  return props => <Component {...props} params={useParams()} />;
+}
 class InvoiceForm extends React.Component {
   constructor(props) {
     super(props);
@@ -44,6 +50,14 @@ class InvoiceForm extends React.Component {
     this.editField = this.editField.bind(this);
   }
   componentDidMount(prevProps) {
+    const id= this.props.params.id
+    if(id){
+      const invoices = [...this.props.invoices]
+      let currInvoice = invoices.find((invoice)=> invoice.id==id)
+      this.setState(currInvoice)
+      // this.state?.items =currInvoice?.items
+      // this.setState(this.setState.items)
+    }
     this.handleCalculateTotal()
   }
   handleRowDel(items) {
@@ -122,10 +136,25 @@ class InvoiceForm extends React.Component {
   };
   closeModal = (event) => this.setState({isOpen: false});
   render() {
+    const {navigate}= this.props
+    const id = this.props.params?.id??null
+
     const  goBack=(event)=>{
       event.preventDefault()
-      const {navigate}= this.props
       navigate('/')
+    }
+    
+    const saveInvoice=()=>{ 
+        if(id){
+          this.props.editInvoice({
+            id: id,
+            data: this.state
+          });
+        }
+        else{
+          this.props.addInvoice(this.state);
+          navigate('/')
+        }
     }
 
     return (<Form onSubmit={this.openModal}>
@@ -212,6 +241,7 @@ class InvoiceForm extends React.Component {
         </Col>
         <Col md={4} lg={3}>
           <div className="sticky-top pt-md-3 pt-xl-4">
+            <Button variant="success" type="button" className="d-block w-100 mb-2" onClick={saveInvoice}>Save Invoice</Button>
             <Button variant="primary" type="submit" className="d-block w-100">Review Invoice</Button>
             <InvoiceModal showModal={this.state.isOpen} closeModal={this.closeModal} info={this.state} items={this.state.items} currency={this.state.currency} subTotal={this.state.subTotal} taxAmmount={this.state.taxAmmount} discountAmmount={this.state.discountAmmount} total={this.state.total}/>
             <Form.Group className="mb-3">
@@ -252,4 +282,11 @@ class InvoiceForm extends React.Component {
   }
 }
 
-export default InvoiceForm;
+function mapStateToProps(state) {
+  const invoices = state.invoices;
+  return {
+    invoices
+  };
+}
+
+export default withParams(connect(mapStateToProps, {addInvoice,editInvoice})(InvoiceForm));

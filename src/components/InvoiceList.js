@@ -1,11 +1,17 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { deleteInvoice } from "../redux/reducers/invoiceRedux";
 
 const InvoiceList = () => {
   const invoiceList = useSelector(state=>state.invoices)
-  console.log(invoiceList)
+  const dispatch= useDispatch()
   const navigate = useNavigate();
+
+  const deleteItem=(e,id)=>{
+    e.stopPropagation()
+    dispatch(deleteInvoice(id))
+  }
   return (
     <div>
       <h1 className="text-center mt-2">Invoice Generator</h1>
@@ -18,17 +24,19 @@ const InvoiceList = () => {
           <h3>New Invoice</h3>
         </button>
 
-        {invoiceList.map((invoice,index)=>{
+        {invoiceList.map((invoice)=>{
           return (
             <button
-              key={index}
+              key={invoice.id}
+              onClick={() => navigate(`/edit/${invoice.id}`)}
               className="m-3 p-3 bg-gray text-dark bg-light rounded shadow-lg d-flex flex-column flex align-items-center justify-content-center cursor-pointer"
               style={{ height: "200px", width: "300px" }}
             >
                 <h3>Invoice No. {invoice.invoiceNumber}</h3>
                 <h5>Bill To: {invoice.billTo}</h5>
                 <h5>Bill From: {invoice.billFrom}</h5>
-                <h5>Total: {invoice.total} {invoice.currency}</h5>            
+                <h5>Total: {invoice.total} {invoice.currency}</h5>
+                <button className="btn btn-danger" onClick={(e)=>deleteItem(e,invoice.id)}>Delete</button>           
             </button>
           )
         })}
